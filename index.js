@@ -3,6 +3,7 @@ const { Client, Intents, Collection } = require('discord.js');
 const { token } = require('./config.json');
 const fs = require('fs');
 const randomPuppy = require('random-puppy');
+const automeme = require('./commands/automeme');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -32,7 +33,16 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
-		await command.execute(interaction, randomPuppy);
+		console.log(interaction.commandName);
+		switch(String(interaction.commandName)){
+			case 'automeme':
+				var require = randomPuppy;
+				break;
+			case 'ping':
+				var require = '';
+				break;
+		}
+		await command.execute(interaction, require);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
